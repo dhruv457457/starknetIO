@@ -1,40 +1,26 @@
-/// Checks if a number is prime
-///
-/// # Arguments
-///
-/// * `n` - The number to check
-///
-/// # Returns
-///
-/// * `true` if the number is prime
-/// * `false` if the number is not prime
-fn is_prime(n: u32) -> bool {
-    if n <= 1 {
-        return false;
-    }
-    if n == 2 {
-        return true;
-    }
-    if n % 2 == 0 {
-        return false;
-    }
-    let mut i = 3;
-    let mut is_prime = true;
-    loop {
-        if i * i > n {
-            break;
-        }
-        if n % i == 0 {
-            is_prime = false;
-            break;
-        }
-        i += 2;
-    }
-    is_prime
+#[starknet::interface]
+trait IHelloStarknet<TContractState> {
+    fn increase_balance(ref self: TContractState, amount: felt252);
+    fn get_balance(self: @TContractState) -> felt252;
 }
 
-// Executable entry point
-#[executable]
-fn main(input: u32) -> bool {
-    is_prime(input)
+#[starknet::contract]
+mod HelloStarknet {
+    #[storage]
+    struct Storage {
+        balance: felt252,
+    }
+
+    #[abi(embed_v0)]  // ✅ replaces deprecated #[external]
+    impl HelloStarknetImpl of super::IHelloStarknet<ContractState> {
+        fn increase_balance(ref self: ContractState, amount: felt252) {
+            let current = self.balance.read();
+            self.balance.write(current + amount);
+        }
+
+        fn get_balance(self: @ContractState) -> felt252 {
+            self.balance.read()
+        }
+    }
 }
+

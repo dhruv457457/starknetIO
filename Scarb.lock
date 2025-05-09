@@ -2,5 +2,5 @@
 version = 1
 
 [[package]]
-name = "prime_prover"
+name = "hellostarknet"
 version = "0.1.0"

@@ -1,12 +1,11 @@
 [package]
-name = "prime_prover"
+name = "hellostarknet"
 version = "0.1.0"
-edition = "2024_07"
-
-[[target.executable]]
-
-[cairo]
-enable-gas = false
+cairo-version = "2.5.4"  # Or latest stable version from https://docs.swmansion.com/scarb/
+description = "Hello Starknet Contract"
 
 [dependencies]
-cairo_execute = "2.11.4"
+starknet = "2.5.4"  # Match this with your cairo-version
+
+[[target.starknet-contract]]
+# No need to specify path if using default `src/lib.cairo`
